@@ -32,7 +32,7 @@ resource "google_cloudbuild_trigger" "trigger" {
       }
 
       dynamic "step" {
-        for_each = concat(local.variable_subsitition_step, var.build_steps)
+        for_each = concat(var.build_steps,local.variable_subsitition_step)
         content {
           # args - (optional) is a type of list of string
           args = step.value["args"]
