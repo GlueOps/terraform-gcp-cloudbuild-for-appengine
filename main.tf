@@ -36,25 +36,12 @@ resource "google_cloudbuild_trigger" "trigger" {
         content {
           # args - (optional) is a type of list of string
           args = step.value["args"]
-          # dir - (optional) is a type of string
-          dir = step.value["dir"]
           # entrypoint - (optional) is a type of string
           entrypoint = step.value["entrypoint"]
           # env - (optional) is a type of list of string
           env = step.value["env"]
-          # id - (optional) is a type of string
-          id = step.value["id"]
           # name - (required) is a type of string
           name = step.value["name"]
-          # secret_env - (optional) is a type of list of string
-          secret_env = step.value["secret_env"]
-          # timeout - (optional) is a type of string
-          timeout = step.value["timeout"]
-          # timing - (optional) is a type of string
-          timing = step.value["timing"]
-          # wait_for - (optional) is a type of list of string
-          wait_for = step.value["wait_for"]
-
         }
       }
 
