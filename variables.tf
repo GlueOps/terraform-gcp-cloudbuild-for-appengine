@@ -6,9 +6,6 @@ variable "github_repository_name" {}
 variable "build_timeout" { default = "300s" }
 
 variable "appengine_service_name" {}
-variable "appengine_service_domains" {
-  type = list(any)
-}
 
 variable "envs_requiring_build_approval" {
   type = list(any)
