@@ -23,7 +23,7 @@ resource "google_cloudbuild_trigger" "trigger" {
     }
   }
 
-  filename = "cloudbuild.yaml"
+  build = var.build
 
   substitutions = { for k, v in local.all_vars : "_${k}" => v }
 

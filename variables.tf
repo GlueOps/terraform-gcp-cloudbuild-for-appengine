@@ -8,6 +8,9 @@ variable "appengine_service_name" {}
 variable "appengine_service_domains" {
   type = list(any)
 }
+variable "buld" {
+  type = map(any)
+}
 variable "envs_requiring_build_approval" {
   type = list(any)
 }
