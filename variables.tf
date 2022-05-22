@@ -21,12 +21,20 @@ variable "encrypted" {}
 locals {
   plaintext = var.plaintext
   encrypted = var.encrypted
+  variable_subsitition_step =     {
+    name       = "launcher.gcr.io/google/ubuntu2004"
+    entrypoint = "bash"
+    args = [
+      "-c",
+      "curl -s https://raw.githubusercontent.com/GlueOps/gcp-cloudbuild-substitution-variables/main/gcsvh.sh | bash"
+    ]
+    env = [for k, v in local.all_vars : "${trim(k, "_")}=$${_${k}}"]
+    }
 
   plaintext_vars = [for key in local.plaintext[*] : { for k, v in key : k => v[var.workspace] }][0]
   secret_vars    = [for key in data.google_kms_secret.all_secrets[*] : { for k, v in key : k => v.plaintext }][0]
   all_vars       = merge(local.plaintext_vars, local.secret_vars)
 }
-
 
 variable "build_steps" {
 
