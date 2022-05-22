@@ -3,14 +3,13 @@ variable "workspace" {}
 variable "gcp_folder_id" {}
 variable "github_org_name" {}
 variable "github_repository_name" {}
+variable "build_timeout" { default = "300s" }
 
 variable "appengine_service_name" {}
 variable "appengine_service_domains" {
   type = list(any)
 }
-variable "buld" {
-  type = map(any)
-}
+
 variable "envs_requiring_build_approval" {
   type = list(any)
 }
@@ -28,3 +27,15 @@ locals {
   all_vars       = merge(local.plaintext_vars, local.secret_vars)
 }
 
+
+variable "build_steps" {
+
+  type = list(object(
+    {
+      name       = string
+      entrypoint = string
+      args       = list(string)
+      env        = list(string)
+    }
+  ))
+}
