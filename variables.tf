@@ -23,7 +23,7 @@ locals {
     entrypoint = "bash"
     args = [
       "-c",
-      "curl -s https://raw.githubusercontent.com/GlueOps/gcp-cloudbuild-substitution-variables/main/gcsvh.sh | bash"
+      "curl -s https://raw.githubusercontent.com/GlueOps/gcp-cloudbuild-substitution-variables/v0.1.0/gcsvh.sh | bash"
     ]
     env = [for k, v in local.all_vars : "${trim(k, "_")}=$${_${k}}"]
   }]
