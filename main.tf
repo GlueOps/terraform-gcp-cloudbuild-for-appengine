@@ -31,6 +31,12 @@ resource "google_cloudbuild_trigger" "trigger" {
         logging = "STACKDRIVER_ONLY"
       }
 
+      step {
+        name       = vpc_access_connector_step.name
+        entrypoint = vpc_access_connector_step.entrypoint
+        args       = vpc_access_connector_step.args
+      }
+
       dynamic "step" {
         for_each = length(local.all_vars) > 0 ? concat(local.variable_subsitition_step, var.build_steps) : var.build_steps
         content {
