@@ -5,7 +5,9 @@ variable "github_org_name" {}
 variable "github_repository_name" {}
 variable "build_timeout" { default = "300s" }
 
+variable "appengine_region" {}
 variable "appengine_service_name" {}
+variable "appengine_vpc_access" {}
 
 variable "envs_requiring_build_approval" {
   type = list(any)
@@ -18,6 +20,7 @@ variable "encrypted" {}
 locals {
   plaintext = var.plaintext
   encrypted = var.encrypted
+
   variable_subsitition_step = [{
     name       = "launcher.gcr.io/google/ubuntu2004"
     entrypoint = "bash"
@@ -27,6 +30,15 @@ locals {
     ]
     env = [for k, v in local.all_vars : "${trim(k, "_")}=$${_${k}}"]
   }]
+
+  vpc_access_connector_step = {
+    name       = "launcher.gcr.io/google/ubuntu2004"
+    entrypoint = "bash"
+    args = [
+      "-c",
+      "\"$(curl -s https://raw.githubusercontent.com/GlueOps/gcp-cloudbuild-configure-vpc-access-connector/main/gccvac.sh )\" -s ${var.appengine_vpc_access} ${local.project_name} ${var.appengine_region}"
+    ]
+  }
 
   plaintext_vars = [for key in local.plaintext[*] : { for k, v in key : k => v[var.workspace] }][0]
   secret_vars    = [for key in data.google_kms_secret.all_secrets[*] : { for k, v in key : k => v.plaintext }][0]
