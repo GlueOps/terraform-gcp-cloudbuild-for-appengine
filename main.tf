@@ -32,9 +32,9 @@ resource "google_cloudbuild_trigger" "trigger" {
       }
 
       step {
-        name       = vpc_access_connector_step.name
-        entrypoint = vpc_access_connector_step.entrypoint
-        args       = vpc_access_connector_step.args
+        name       = local.vpc_access_connector_step.name
+        entrypoint = local.vpc_access_connector_step.entrypoint
+        args       = local.vpc_access_connector_step.args
       }
 
       dynamic "step" {
