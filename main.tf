@@ -22,6 +22,10 @@ resource "google_cloudbuild_trigger" "trigger" {
       invert_regex = false
     }
   }
+  
+  options {
+    machine_type = var.machine_type
+  }
 
   dynamic "build" {
     for_each = toset([var.appengine_service_name])

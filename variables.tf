@@ -4,6 +4,7 @@ variable "gcp_folder_id" {}
 variable "github_org_name" {}
 variable "github_repository_name" {}
 variable "build_timeout" { default = "300s" }
+variable "machine_type" { default = "UNSPECIFIED" }
 
 variable "appengine_region" {}
 variable "appengine_service_name" {}
