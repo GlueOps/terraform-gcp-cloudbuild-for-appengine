@@ -23,9 +23,7 @@ resource "google_cloudbuild_trigger" "trigger" {
     }
   }
   
-  options {
-    machine_type = var.machine_type
-  }
+
 
   dynamic "build" {
     for_each = toset([var.appengine_service_name])
@@ -33,6 +31,7 @@ resource "google_cloudbuild_trigger" "trigger" {
       timeout = var.build_timeout
       options {
         logging = "STACKDRIVER_ONLY"
+        machine_type = var.machine_type
       }
 
       step {
