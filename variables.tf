@@ -37,7 +37,7 @@ locals {
     entrypoint = "bash"
     args = [
       "-c",
-      "curl -s https://raw.githubusercontent.com/GlueOps/gcp-cloudbuild-configure-vpc-access-connector/v0.1.0/gccvac.sh | bash -s ${var.appengine_vpc_access} ${local.project_name} ${var.appengine_region}"
+      "curl -s https://raw.githubusercontent.com/GlueOps/gcp-app-engine-flexible-configure-vpc/v0.1.0/gaefcv.sh | bash -s ${var.appengine_vpc_access} ${var.workspace}-vpc ${var.workspace}-${var.appengine_region}-private-subnet"
     ]
   }
 
