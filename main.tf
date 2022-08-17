@@ -18,7 +18,7 @@ resource "google_cloudbuild_trigger" "trigger" {
     owner = var.github_org_name
 
     push {
-      branch       = "^main$"
+      branch       = var.github_vcs_branch_regex
       invert_regex = false
     }
   }
