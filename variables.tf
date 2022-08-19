@@ -7,7 +7,7 @@ variable "github_vcs_branch_regex" {
   default = "^main$"
 }
 variable "build_timeout" { default = "300s" }
-variable "machine_type" { default = "UNSPECIFIED" }
+variable "machine_type" { default = "" }
 
 variable "appengine_region" {}
 variable "appengine_service_name" {}
