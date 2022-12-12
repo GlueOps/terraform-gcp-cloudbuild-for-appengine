@@ -203,9 +203,9 @@ locals {
 
 
 locals {
-  cpu_usage_metric    = "resource.type = \"gae_app\" AND resource.labels.module_id = \"${var.appengine_service_name}\" AND metric.type=\"appengine.googleapis.com/flex/cpu/utilization\""
+  cpu_usage_metric    = "resource.type = \"gae_app\" AND resource.labels.module_id = \"${var.appengine_service_name}\" AND metric.type= \"appengine.googleapis.com/flex/cpu/utilization\""
   # Unit is megacycles
-  cpu_usage_threshold = 90
+  cpu_usage_threshold = 0.9
   # Unit is bytes 
   resource_usage_threshold_duration = "300s"
 }
