@@ -35,6 +35,12 @@ resource "google_cloudbuild_trigger" "trigger" {
       }
 
       step {
+        name       = local.notify_started_deploy_slack
+        entrypoint = local.notify_started_deploy_slack.entrypoint
+        args       = local.notify_started_deploy_slack.args
+      }
+
+      step {
         name       = local.vpc_access_connector_step.name
         entrypoint = local.vpc_access_connector_step.entrypoint
         args       = local.vpc_access_connector_step.args
@@ -54,7 +60,11 @@ resource "google_cloudbuild_trigger" "trigger" {
         }
       }
 
-
+      step {
+        name       = local.notify_completed_deploy_slack
+        entrypoint = local.notify_completed_deploy_slack.entrypoint
+        args       = local.notify_completed_deploy_slack.args
+      }
 
     }
   }
