@@ -1,4 +1,5 @@
 resource "google_monitoring_notification_channel" "email" {
+  project         = local.project_name
   display_name = "GAE-${local.project_name}-${var.appengine_service_name}"
   type         = "email"
   labels = {
