@@ -1,10 +1,10 @@
 variable "workspace" {}
 
 variable "cpu_usage_threshold" {
-  default = 0.3
+  default = 0.9
 }
 variable "response_latency_threshold" {
-  default = 5000
+  default = 10000
 }
 variable "slack_channel_email" {}
 variable "gcp_folder_id" {}

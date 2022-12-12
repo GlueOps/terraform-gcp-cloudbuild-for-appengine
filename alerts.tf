@@ -42,7 +42,7 @@ locals {
 
 resource "google_monitoring_alert_policy" "gae-resource-usage-alert" {
   project               = local.project_name
-  display_name          = "${local.project_name}-${var.appengine_service_name}-resource-usage-alert"
+  display_name          = "${local.project_name}-${var.appengine_service_name}-gae-cpu-usage-alert"
   combiner              = "OR"
   enabled               = true
   notification_channels = local.notification_channels
@@ -82,43 +82,37 @@ resource "google_monitoring_alert_policy" "gae-resource-usage-alert" {
 
 }
 
+resource "google_monitoring_alert_policy" "gae-response-latency-alert" {
+  project               = local.project_name
+  display_name          = "${local.project_name}-${var.appengine_service_name}-gae-response-latency-alert"
+  combiner              = "OR"
+  enabled               = true
+  notification_channels = local.notification_channels
+  user_labels = {
+    service = var.service_name
+  }
 
+  documentation {
+    content   = "the ${local.project_name}-${var.appengine_service_name} app has been experiencing high response latency for greater than 1 minute"
+    mime_type = "text/markdown"
+  }
 
-# locals {
-#   response_latency_threshold_duration = "300s"
-# }
+  conditions {
+    display_name = "${local.project_name}-${var.appengine_service_name}-gae-app-response-latency"
 
-# resource "google_monitoring_alert_policy" "gae-response-latency-alert" {
-#   project               = local.project_name
-#   display_name          = "${local.project_name}-${var.appengine_service_name}-response-latency-alert"
-#   combiner              = "OR"
-#   enabled               = true
-#   notification_channels = local.notification_channels
-#   user_labels = {
-#     service = var.service_name
-#   }
+    condition_threshold {
+      threshold_value = var.response_latency_threshold
+      comparison      = local.threshold_comparison.greater_than
+      duration        = local.resource_usage_threshold_duration
 
-#   documentation {
-#     content   = "the ${local.project_name}-${var.appengine_service_name} app has been experiencing high response latency for greater than 1 minute"
-#     mime_type = "text/markdown"
-#   }
+      filter = "resource.type = \"gae_app\" AND resource.labels.module_id = \"${var.appengine_service_name}\" AND metric.type = \"appengine.googleapis.com/http/server/response_latencies\""
 
-#   conditions {
-#     display_name = "${local.project_name}-${var.appengine_service_name}-gae-app-response-latency"
-
-#     condition_threshold {
-#       threshold_value = var.response_latency_threshold
-#       comparison      = var.threshold_comparison.greater_than
-#       duration        = local.response_latency_threshold_duration
-
-#       filter = "resource.type = \"gae_app\" AND resource.labels.module_id = \"${var.appengine_service_name}\" AND metric.type = \"appengine.googleapis.com/http/server/response_latencies\""
-
-#       aggregations {
-#         per_series_aligner   = local.series_align_method.sum
-#         alignment_period     = local.alignment_period
-#         cross_series_reducer = local.reducer_method.percentile_99
-#         group_by_fields      = [local.group_by_labels.module_id]
-#       }
-#     }
-#   }
-# }
+      aggregations {
+        per_series_aligner   = local.series_align_method.sum
+        alignment_period     = local.alignment_period
+        cross_series_reducer = local.reducer_method.percentile_99
+        group_by_fields      = [local.group_by_labels.module_id]
+      }
+    }
+  }
+}
