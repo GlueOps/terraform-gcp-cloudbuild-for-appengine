@@ -193,7 +193,7 @@ resource "google_monitoring_alert_policy" "gae-resource-usage-alert" {
   display_name          = "${local.project_name}-${var.appengine_service_name}-resource-usage-alert"
   combiner              = "OR"
   enabled               = true
-  notification_channels = var.notification_channels
+  notification_channels = [google_monitoring_notification_channel.email.id]
   user_labels = {
     service = var.appengine_service_name
   }
