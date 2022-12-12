@@ -18,27 +18,27 @@ locals {
 }
 
 
-resource "google_monitoring_metric_descriptor" "response_latencies" {
-  project         = local.project_name
-  type        = "gauge"
-  description = "The server response latencies for the App Engine application"
-  labels {
-    key   = "project_id"
-  }
-  labels {
-    key   = "version_id"
-  }
-  labels {
-    key   = "module_id"
-  }
-  labels {
-    key   = "instance_id"
-  }
-  metric_kind   = "DELTA"
-  value_type    = "DISTRIBUTION"
-  unit          = "ms"
-  display_name  = "App Engine response latencies"
-}
+# resource "google_monitoring_metric_descriptor" "response_latencies" {
+#   project         = local.project_name
+#   type        = "gauge"
+#   description = "The server response latencies for the App Engine application"
+#   labels {
+#     key   = "project_id"
+#   }
+#   labels {
+#     key   = "version_id"
+#   }
+#   labels {
+#     key   = "module_id"
+#   }
+#   labels {
+#     key   = "instance_id"
+#   }
+#   metric_kind   = "DELTA"
+#   value_type    = "DISTRIBUTION"
+#   unit          = "ms"
+#   display_name  = "App Engine response latencies"
+# }
 
 
 resource "google_monitoring_alert_policy" "gae_latency" {
@@ -50,7 +50,7 @@ resource "google_monitoring_alert_policy" "gae_latency" {
     condition_threshold {
       comparison      = "COMPARISON_GT"
       duration        = "60s"
-      filter          = "metric.type=\"appengine.googleapis.com/http/server/response_latencies\" resource.type=\"gae_app\" metric.label.\"module_id\"=\"${var.appengine_service_name}\""
+      filter          = "metric.type=\"appengine.googleapis.com/http/server/response_latencies\" resource.type=\"gae_app\"" #metric.label.\"module_id\"=\"${var.appengine_service_name}\""
       threshold_value = 3
       trigger {
         count = 1
