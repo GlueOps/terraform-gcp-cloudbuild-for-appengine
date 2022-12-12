@@ -1,7 +1,6 @@
 variable "workspace" {}
 
-variable "slack_channel_name" {}
-variable "encrypted_slack_token" {}
+variable "slack_channel_email" {}
 variable "gcp_folder_id" {}
 variable "github_org_name" {}
 variable "github_repository_name" {}
