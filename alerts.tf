@@ -51,7 +51,7 @@ resource "google_monitoring_alert_policy" "gae-resource-usage-alert" {
   }
 
   documentation {
-    content   = "${local.project_name}-${var.appengine_service_name} app has been experiencing unusually high cpu utilization for greater than 1 minute"
+    content   = "${local.project_name}-${var.appengine_service_name} app has been experiencing unusually high cpu utilization"
     mime_type = "text/markdown"
   }
 
@@ -93,7 +93,7 @@ resource "google_monitoring_alert_policy" "gae-response-latency-alert" {
   }
 
   documentation {
-    content   = "the ${local.project_name}-${var.appengine_service_name} app has been experiencing high response latency for greater than 1 minute"
+    content   = "the ${local.project_name}-${var.appengine_service_name} app has been experiencing high response latency"
     mime_type = "text/markdown"
   }
 
@@ -137,7 +137,7 @@ resource "google_monitoring_alert_policy" "gae-response-code-alert" {
   }
 
   documentation {
-    content   = "the ${local.project_name}-${var.appengine_service_name} app has been responding with 500 internal server error status codes for greater than a minute"
+    content   = "the ${local.project_name}-${var.appengine_service_name} app has been responding with 500 internal server error status codes"
     mime_type = "text/markdown"
   }
 
