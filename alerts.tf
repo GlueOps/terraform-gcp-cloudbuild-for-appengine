@@ -146,8 +146,8 @@ resource "google_monitoring_alert_policy" "gae-response-code-alert" {
 
     condition_threshold {
       threshold_value = 0
-      comparison      = var.threshold_comparison.greater_than
-      duration        = local.response_code_threshold_duration
+      comparison      = local.threshold_comparison.greater_than
+      duration        = "60s"
 
       filter = "resource.type = \"gae_app\" AND resource.labels.module_id = \"${var.appengine_service_name}\" AND metric.label.\"response_code\">=\"500\" AND metric.type = \"appengine.googleapis.com/http/server/response_count\""
 
