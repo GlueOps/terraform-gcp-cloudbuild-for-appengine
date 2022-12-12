@@ -122,3 +122,47 @@ resource "google_monitoring_alert_policy" "gae-response-latency-alert" {
     }
   }
 }
+
+
+
+
+resource "google_monitoring_alert_policy" "gae-response-code-alert" {
+  project               = local.project_name
+  display_name          = "${local.project_name}-${var.appengine_service_name}-gae-response-code-alert"
+  combiner              = "OR"
+  enabled               = true
+  notification_channels = var.notification_channels
+  user_labels = {
+    service = var.appengine_service_name
+  }
+
+  documentation {
+    content   = "the ${local.project_name}-${var.appengine_service_name} app has been responding with 500 internal server error status codes for greater than a minute"
+    mime_type = "text/markdown"
+  }
+
+  conditions {
+    display_name = "${local.project_name}-${var.appengine_service_name}-gae-app-500-response"
+
+    condition_threshold {
+      threshold_value = 0
+      comparison      = var.threshold_comparison.greater_than
+      duration        = local.response_code_threshold_duration
+
+      filter = "resource.type = \"gae_app\" AND resource.labels.module_id = \"${var.appengine_service_name}\" AND metric.label.\"response_code\">=\"500\" AND metric.type = \"appengine.googleapis.com/http/server/response_count\""
+
+      aggregations {
+        per_series_aligner   = local.series_align_method.rate
+        alignment_period     = local.alignment_period
+        cross_series_reducer = local.reducer_method.count
+        group_by_fields      = [local.group_by_labels.response_code]
+      }
+
+      trigger {
+        count   = 1
+        percent = 0
+      }
+
+    }
+  }
+}
