@@ -9,7 +9,7 @@ variable "alert_response_latency_threshold" {
 variable "alert_5xx_threshold" {
   default = 5 #milliseconds
 }
-variable "slack_channel_email" {}
+variable "alert_email" {}
 variable "gcp_folder_id" {}
 variable "github_org_name" {}
 variable "github_repository_name" {}

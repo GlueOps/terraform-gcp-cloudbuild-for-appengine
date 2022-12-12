@@ -3,7 +3,7 @@ resource "google_monitoring_notification_channel" "email" {
   display_name = "GAE-${local.project_name}-${var.appengine_service_name}"
   type         = "email"
   labels = {
-    email_address = var.slack_channel_email
+    email_address = var.alert_email
   }
   force_delete = false
 }
