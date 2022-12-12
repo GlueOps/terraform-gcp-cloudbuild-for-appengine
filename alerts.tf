@@ -1,19 +1,11 @@
-data "google_kms_secret" "slack_token" {
-  crypto_key = data.google_kms_crypto_key.default.id
-  ciphertext = var.encrypted_slack_token
-}
-
-
-// create a google monitoring notification channel for slack
-resource "google_monitoring_notification_channel" "slack" {
-  display_name = "Slack Alert Channel"
-  type         = "slack"
+resource "google_monitoring_notification_channel" "email" {
+  display_name = "GAE-${local.project_name}-${var.appengine_service_name}"
+  type         = "email"
   labels = {
-    channel_name = var.slack_channel_name
-    token        = data.google_kms_secret.slack_token.plaintext
+    email_address = var.slack_channel_email
   }
+  force_delete = false
 }
-
 
 locals {
   gae_latency_name = "${local.project_name}-${var.appengine_service_name} - App Engine LATENCY Alert"
@@ -45,7 +37,7 @@ resource "google_monitoring_alert_policy" "gae_latency" {
     mime_type = "text/markdown"
   }
   enabled               = true
-  notification_channels = [google_monitoring_notification_channel.slack.id]
+  notification_channels = [google_monitoring_notification_channel.email.id]
 }
 
 
@@ -70,7 +62,7 @@ resource "google_monitoring_alert_policy" "gae_memory" {
     mime_type = "text/markdown"
   }
   enabled               = true
-  notification_channels = [google_monitoring_notification_channel.slack.id]
+  notification_channels = [google_monitoring_notification_channel.email.id]
 }
 
 resource "google_monitoring_alert_policy" "gae_cpu" {
@@ -93,7 +85,7 @@ resource "google_monitoring_alert_policy" "gae_cpu" {
     mime_type = "text/markdown"
   }
   enabled               = true
-  notification_channels = [google_monitoring_notification_channel.slack.id]
+  notification_channels = [google_monitoring_notification_channel.email.id]
 }
 
 
@@ -117,7 +109,7 @@ resource "google_monitoring_alert_policy" "gae_5xx" {
     mime_type = "text/markdown"
   }
   enabled               = true
-  notification_channels = [google_monitoring_notification_channel.slack.id]
+  notification_channels = [google_monitoring_notification_channel.email.id]
 }
 
 
@@ -141,7 +133,7 @@ resource "google_monitoring_alert_policy" "gae_quota_denials" {
     mime_type = "text/markdown"
   }
   enabled               = true
-  notification_channels = [google_monitoring_notification_channel.slack.id]
+  notification_channels = [google_monitoring_notification_channel.email.id]
 }
 
 // create app engine alert for app engine service that has ANY ddos attacks during a 1 minute windows
@@ -165,5 +157,5 @@ resource "google_monitoring_alert_policy" "gae_ddos" {
     mime_type = "text/markdown"
   }
   enabled               = true
-  notification_channels = [google_monitoring_notification_channel.slack.id]
+  notification_channels = [google_monitoring_notification_channel.email.id]
 }
