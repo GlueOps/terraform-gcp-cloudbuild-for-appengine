@@ -51,7 +51,7 @@ resource "google_monitoring_alert_policy" "gae-resource-usage-alert" {
   }
 
   documentation {
-    content   = "${local.project_name}-${var.appengine_service_name} app has been experiencing unusually high resource utilization for greater than 5 minutes"
+    content   = "${local.project_name}-${var.appengine_service_name} app has been experiencing unusually high cpu utilization for greater than 1 minute"
     mime_type = "text/markdown"
   }
 
