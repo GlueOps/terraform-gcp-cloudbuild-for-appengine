@@ -19,6 +19,7 @@ locals {
 
 
 resource "google_monitoring_metric_descriptor" "response_latencies" {
+  project         = local.project_name
   type        = "gauge"
   description = "The server response latencies for the App Engine application"
   labels {
