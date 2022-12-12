@@ -19,6 +19,7 @@ locals {
 
 
 resource "google_monitoring_alert_policy" "gae_latency" {
+  project         = local.project_name
   display_name = local.gae_latency_name
   combiner     = "OR"
   conditions {
@@ -44,6 +45,7 @@ resource "google_monitoring_alert_policy" "gae_latency" {
 
 
 resource "google_monitoring_alert_policy" "gae_memory" {
+  project         = local.project_name
   display_name = local.gae_memory_name
   combiner     = "OR"
   conditions {
@@ -67,6 +69,7 @@ resource "google_monitoring_alert_policy" "gae_memory" {
 }
 
 resource "google_monitoring_alert_policy" "gae_cpu" {
+  project         = local.project_name
   display_name = local.gae_cpu_name
   combiner     = "OR"
   conditions {
@@ -91,6 +94,7 @@ resource "google_monitoring_alert_policy" "gae_cpu" {
 
 
 resource "google_monitoring_alert_policy" "gae_5xx" {
+  project         = local.project_name
   display_name = "App Engine 5xx Alert"
   combiner     = "OR"
   conditions {
@@ -115,6 +119,7 @@ resource "google_monitoring_alert_policy" "gae_5xx" {
 
 
 resource "google_monitoring_alert_policy" "gae_quota_denials" {
+  project         = local.project_name
   display_name = local.gae_quota_name
   combiner     = "OR"
   conditions {
@@ -139,6 +144,7 @@ resource "google_monitoring_alert_policy" "gae_quota_denials" {
 
 // create app engine alert for app engine service that has ANY ddos attacks during a 1 minute windows
 resource "google_monitoring_alert_policy" "gae_ddos" {
+  project         = local.project_name
   display_name = local.gae_ddos_name
   combiner     = "OR"
   conditions {
