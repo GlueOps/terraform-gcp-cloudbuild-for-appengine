@@ -59,10 +59,9 @@ resource "google_monitoring_alert_policy" "gae-resource-usage-alert" {
     display_name = "${local.project_name}-${var.appengine_service_name}-gae-cpu-usage"
 
     condition_threshold {
-      threshold_value         = var.cpu_usage_threshold
-      comparison              = local.threshold_comparison.greater_than
-      duration                = "60s"
-      evaluation_missing_data = "EVALUATION_MISSING_DATA_INACTIVE"
+      threshold_value = var.cpu_usage_threshold
+      comparison      = local.threshold_comparison.greater_than
+      duration        = local.resource_usage_threshold_duration
 
       filter = "resource.type = \"gae_app\" AND resource.labels.module_id = \"${var.appengine_service_name}\" AND metric.type = \"appengine.googleapis.com/flex/cpu/utilization\""
 
@@ -102,9 +101,10 @@ resource "google_monitoring_alert_policy" "gae-response-latency-alert" {
     display_name = "${local.project_name}-${var.appengine_service_name}-gae-app-response-latency"
 
     condition_threshold {
-      threshold_value = var.response_latency_threshold
-      comparison      = local.threshold_comparison.greater_than
-      duration        = local.resource_usage_threshold_duration
+      threshold_value         = var.response_latency_threshold
+      comparison              = local.threshold_comparison.greater_than
+      duration                = "60s"
+      evaluation_missing_data = "EVALUATION_MISSING_DATA_INACTIVE"
 
       filter = "resource.type = \"gae_app\" AND resource.labels.module_id = \"${var.appengine_service_name}\" AND metric.type = \"appengine.googleapis.com/http/server/response_latencies\""
 
