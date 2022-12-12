@@ -241,6 +241,11 @@ resource "google_monitoring_alert_policy" "gae-resource-usage-alert" {
         cross_series_reducer = local.reducer_method.sum
         group_by_fields      = [local.group_by_labels.module_id]
       }
+
+      trigger {
+        count = 1
+        percent = 0
+      }
     }
   }
 
