@@ -155,7 +155,7 @@ resource "google_monitoring_alert_policy" "gae-response-code-alert" {
       aggregations {
         per_series_aligner   = local.series_align_method.sum
         alignment_period     = local.alignment_period
-        cross_series_reducer = local.reducer_method.count
+        cross_series_reducer = local.reducer_method.sum
         group_by_fields      = [local.group_by_labels.response_code]
       }
 
