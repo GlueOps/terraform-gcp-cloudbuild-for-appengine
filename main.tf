@@ -22,7 +22,7 @@ resource "google_cloudbuild_trigger" "trigger" {
       invert_regex = false
     }
   }
-  
+
 
 
   dynamic "build" {
@@ -30,7 +30,7 @@ resource "google_cloudbuild_trigger" "trigger" {
     content {
       timeout = var.build_timeout
       options {
-        logging = "STACKDRIVER_ONLY"
+        logging      = "STACKDRIVER_ONLY"
         machine_type = var.machine_type
       }
 
