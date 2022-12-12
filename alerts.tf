@@ -24,19 +24,15 @@ resource "google_monitoring_metric_descriptor" "response_latencies" {
   description = "The server response latencies for the App Engine application"
   labels {
     key   = "project_id"
-    value = "The ID of the project that owns the App Engine application"
   }
   labels {
     key   = "version_id"
-    value = "The version of the App Engine application"
   }
   labels {
     key   = "module_id"
-    value = "The module of the App Engine application"
   }
   labels {
     key   = "instance_id"
-    value = "The instance ID of the instance handling the request"
   }
   metric_kind   = "DELTA"
   value_type    = "DISTRIBUTION"
