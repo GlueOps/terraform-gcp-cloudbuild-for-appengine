@@ -9,13 +9,37 @@ resource "google_monitoring_notification_channel" "email" {
 }
 
 locals {
-  gae_latency_name = "${local.project_name}-${var.appengine_service_name} - App Engine LATENCY Alert"
-  gae_memory_name  = "${local.project_name}-${var.appengine_service_name} - App Engine MEMORY Alert"
-  gae_cpu_name     = "${local.project_name}-${var.appengine_service_name} - App Engine CPU Alert"
-  gae_ddos_name    = "${local.project_name}-${var.appengine_service_name} - App Engine DDOS Alert"
-  gae_quota_name   = "${local.project_name}-${var.appengine_service_name} - App Engine QUOTA Alert"
+
+  series_align_method = {
+    mean       = "ALIGN_MEAN"
+    count_true = "ALIGN_COUNT_TRUE"
+    rate       = "ALIGN_RATE"
+    sum        = "ALIGN_SUM"
+  }
+  alignment_period = "60s"
+
+  reducer_method = {
+    sum           = "REDUCE_SUM"
+    none          = "REDUCE_NONE"
+    count         = "REDUCE_COUNT"
+    percentile_99 = "REDUCE_PERCENTILE_99"
+  }
+
+  group_by_labels = {
+    response_code = "metric.label.response_code"
+    module_id     = "resource.label.module_id"
+  }
+
+  threshold_comparison = {
+    less_than    = "COMPARISON_LT"
+    greater_than = "COMPARISON_GT"
+  }
 
 }
+
+
+
+
 
 
 
@@ -179,12 +203,10 @@ locals {
 
 
 locals {
-  cpu_usage_metric    = "metric.type=\"appengine.googleapis.com/system/cpu/usage\" resource.type=\"gae_app\""
-  memory_usage_metric = "metric.type=\"appengine.googleapis.com/system/memory/usage\" resource.type=\"gae_app\""
+  cpu_usage_metric    = "resource.type = \"gae_app\" AND resource.labels.module_id = \"${var.appengine_service_name}\" AND metric.type=\"appengine.googleapis.com/flex/cpu/utilization\""
   # Unit is megacycles
-  cpu_usage_threshold = 10000
+  cpu_usage_threshold = 90
   # Unit is bytes 
-  memory_usage_threshold            = 512000000
   resource_usage_threshold_duration = "300s"
 }
 
@@ -224,38 +246,6 @@ resource "google_monitoring_alert_policy" "gae-resource-usage-alert" {
 
 
 }
-
-
-
-locals {
-
-  series_align_method = {
-    mean       = "ALIGN_MEAN"
-    count_true = "ALIGN_COUNT_TRUE"
-    rate       = "ALIGN_RATE"
-    sum        = "ALIGN_SUM"
-  }
-  alignment_period = "60s"
-
-  reducer_method = {
-    sum           = "REDUCE_SUM"
-    none          = "REDUCE_NONE"
-    count         = "REDUCE_COUNT"
-    percentile_99 = "REDUCE_PERCENTILE_99"
-  }
-
-  group_by_labels = {
-    response_code = "metric.label.response_code"
-    module_id     = "resource.label.module_id"
-  }
-
-  threshold_comparison = {
-    less_than    = "COMPARISON_LT"
-    greater_than = "COMPARISON_GT"
-  }
-
-}
-
 
 
 
