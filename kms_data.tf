@@ -17,3 +17,10 @@ data "google_kms_secret" "all_secrets" {
 
 }
 
+data "google_kms_secret" "slack_webhook_url" {
+
+  crypto_key = data.google_kms_crypto_key.default.id
+  ciphertext = var.encrypted_slack_webhook_url
+
+}
+

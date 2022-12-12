@@ -1,15 +1,26 @@
 variable "workspace" {}
 
 variable "alert_cpu_usage_threshold" {
-  default = 0.9 #percentage
+  default     = 0.9 #percentage
+  description = "The threshold for the CPU usage alert as a Percentage between 0 and 1. Example: 0.6"
 }
 variable "alert_response_latency_threshold" {
-  default = 10000 #milliseconds
+  default     = 10000
+  description = "The threshold for high latency as a number of milliseconds. Example: 10000"
 }
 variable "alert_5xx_threshold" {
-  default = 5 #milliseconds
+  default     = 5
+  description = "value of 5xx errors to trigger alert. Example: 5"
 }
-variable "alert_email" {}
+variable "alert_email" {
+  description = "The email address to send alerts to. Example: alerts@example.com"
+}
+variable "encrypted_slack_webhook_url" {
+  description = "The webhook URL for slack to send deployment notifications to. Example: https://hooks.slack.com/services/XXXXXXXXX/YYYYYYYY/ZZZZZZZZZZZZZZ"
+}
+variable "slack_channel_for_deploy_notifications" {
+  description = "The slack channel to send deployment notifications to. Example: #deployments"
+}
 variable "gcp_folder_id" {}
 variable "github_org_name" {}
 variable "github_repository_name" {}
@@ -51,6 +62,25 @@ locals {
     args = [
       "-c",
       "curl -s https://raw.githubusercontent.com/GlueOps/gcp-app-engine-flexible-configure-vpc/v0.1.0/gaefcv.sh | bash -s ${var.appengine_vpc_access} ${var.workspace}-vpc ${var.workspace}-${var.appengine_region}-private-subnet"
+    ]
+  }
+
+
+  notify_started_deploy_slack = {
+    name       = "launcher.gcr.io/google/ubuntu2004"
+    entrypoint = "bash"
+    args = [
+      "-c",
+      "curl -X POST --data-urlencode 'payload={\"channel\": \"${var.slack_channel_for_deploy_notifications}\", \"username\": \"CloudBuild\", \"text\": \"${local.project_name} - deployment STARTED for: ${var.appengine_service_name}\", \"icon_emoji\": \":ghost:\"}' ${data.google_kms_secret.slack_webhook_url.plaintext} | true"
+    ]
+  }
+
+  notify_completed_deploy_slack = {
+    name       = "launcher.gcr.io/google/ubuntu2004"
+    entrypoint = "bash"
+    args = [
+      "-c",
+      "curl -X POST --data-urlencode 'payload={\"channel\": \"${var.slack_channel_for_deploy_notifications}\", \"username\": \"CloudBuild\", \"text\": \"${local.project_name} - deployment COMPLETED for: ${var.appengine_service_name}\", \"icon_emoji\": \":ghost:\"}' ${data.google_kms_secret.slack_webhook_url.plaintext} | true"
     ]
   }
 
