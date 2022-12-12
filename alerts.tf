@@ -153,7 +153,7 @@ resource "google_monitoring_alert_policy" "gae-response-code-alert" {
       filter = "resource.type = \"gae_app\" AND resource.labels.module_id = \"${var.appengine_service_name}\" AND metric.label.\"response_code\">=\"500\" AND metric.type = \"appengine.googleapis.com/http/server/response_count\""
 
       aggregations {
-        per_series_aligner   = local.series_align_method.rate
+        per_series_aligner   = local.series_align_method.sum
         alignment_period     = local.alignment_period
         cross_series_reducer = local.reducer_method.count
         group_by_fields      = [local.group_by_labels.response_code]
