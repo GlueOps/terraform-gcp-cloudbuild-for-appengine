@@ -203,10 +203,6 @@ locals {
 
 
 locals {
-  cpu_usage_metric    = "resource.type = \"gae_app\" AND resource.labels.module_id = \"${var.appengine_service_name}\" AND metric.type = \"appengine.googleapis.com/flex/cpu/utilization\""
-  # Unit is megacycles
-  cpu_usage_threshold = 0.9
-  # Unit is bytes 
   resource_usage_threshold_duration = "300s"
 }
 
@@ -229,11 +225,11 @@ resource "google_monitoring_alert_policy" "gae-resource-usage-alert" {
     display_name = "${local.project_name}-${var.appengine_service_name}-gae-cpu-usage"
 
     condition_threshold {
-      threshold_value = local.cpu_usage_threshold
+      threshold_value = var.cpu_usage_threshold
       comparison      = local.threshold_comparison.greater_than
       duration        = local.resource_usage_threshold_duration
 
-      filter = local.cpu_usage_metric
+      filter = "resource.type = \"gae_app\" AND resource.labels.module_id = \"${var.appengine_service_name}\" AND metric.type = \"appengine.googleapis.com/flex/cpu/utilization\""
 
       aggregations {
         per_series_aligner   = local.series_align_method.mean
@@ -243,7 +239,7 @@ resource "google_monitoring_alert_policy" "gae-resource-usage-alert" {
       }
 
       trigger {
-        count = 1
+        count   = 1
         percent = 0
       }
     }
