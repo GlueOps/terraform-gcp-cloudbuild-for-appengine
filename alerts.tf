@@ -131,7 +131,7 @@ resource "google_monitoring_alert_policy" "gae-response-code-alert" {
   display_name          = "${local.project_name}-${var.appengine_service_name}-gae-response-code-alert"
   combiner              = "OR"
   enabled               = true
-  notification_channels = var.notification_channels
+  notification_channels = local.notification_channels
   user_labels = {
     service = var.appengine_service_name
   }
