@@ -89,7 +89,7 @@ resource "google_monitoring_alert_policy" "gae-response-latency-alert" {
   enabled               = true
   notification_channels = local.notification_channels
   user_labels = {
-    service = var.service_name
+    service = var.appengine_service_name
   }
 
   documentation {
