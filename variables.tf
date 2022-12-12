@@ -15,7 +15,7 @@ variable "alert_5xx_threshold" {
 variable "alert_email" {
   description = "The email address to send alerts to. Example: alerts@example.com"
 }
-variable "slack_webhook_url" {
+variable "encrypted_slack_webhook_url" {
   description = "The webhook URL for slack to send deployment notifications to. Example: https://hooks.slack.com/services/XXXXXXXXX/YYYYYYYY/ZZZZZZZZZZZZZZ"
 }
 variable "slack_channel_for_deploy_notifications" {
@@ -71,7 +71,7 @@ locals {
     entrypoint = "bash"
     args = [
       "-c",
-      "curl -X POST --data-urlencode 'payload={\"channel\": \"${var.slack_channel_for_deploy_notifications}\", \"username\": \"CloudBuild\", \"text\": \"${local.project_name} - deployment started for: ${var.appengine_service_name}\", \"icon_emoji\": \":ghost:\"}' ${var.slack_webhook_url} | true"
+      "curl -X POST --data-urlencode 'payload={\"channel\": \"${var.slack_channel_for_deploy_notifications}\", \"username\": \"CloudBuild\", \"text\": \"${local.project_name} - deployment started for: ${var.appengine_service_name}\", \"icon_emoji\": \":ghost:\"}' ${data.google_kms_secret.slack_webhook_url.plaintext} | true"
     ]
   }
 
@@ -80,7 +80,7 @@ locals {
     entrypoint = "bash"
     args = [
       "-c",
-      "curl -X POST --data-urlencode 'payload={\"channel\": \"${var.slack_channel_for_deploy_notifications}\", \"username\": \"CloudBuild\", \"text\": \"${local.project_name} - deployment completed for: ${var.appengine_service_name}\", \"icon_emoji\": \":ghost:\"}' ${var.slack_webhook_url} | true"
+      "curl -X POST --data-urlencode 'payload={\"channel\": \"${var.slack_channel_for_deploy_notifications}\", \"username\": \"CloudBuild\", \"text\": \"${local.project_name} - deployment completed for: ${var.appengine_service_name}\", \"icon_emoji\": \":ghost:\"}' ${data.google_kms_secret.slack_webhook_url.plaintext} | true"
     ]
   }
 
