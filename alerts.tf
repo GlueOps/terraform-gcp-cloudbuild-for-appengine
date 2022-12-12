@@ -19,7 +19,6 @@ locals {
 
 
 resource "google_monitoring_metric_descriptor" "response_latencies" {
-  name        = "appengine.googleapis.com/http/server/response_latencies"
   type        = "gauge"
   description = "The server response latencies for the App Engine application"
   labels {
