@@ -18,6 +18,9 @@ variable "alert_email" {
 variable "slack_webhook_url" {
   description = "The webhook URL for slack to send deployment notifications to. Example: https://hooks.slack.com/services/XXXXXXXXX/YYYYYYYY/ZZZZZZZZZZZZZZ"
 }
+variable "slack_channel_for_deploy_notifications" {
+  description = "The slack channel to send deployment notifications to. Example: #deployments"
+}
 variable "gcp_folder_id" {}
 variable "github_org_name" {}
 variable "github_repository_name" {}
