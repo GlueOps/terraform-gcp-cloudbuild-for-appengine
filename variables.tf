@@ -3,6 +3,9 @@ variable "workspace" {}
 variable "cpu_usage_threshold" {
   default = 0.3
 }
+variable "response_latency_threshold" {
+  default = 5000
+}
 variable "slack_channel_email" {}
 variable "gcp_folder_id" {}
 variable "github_org_name" {}
