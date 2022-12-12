@@ -35,7 +35,7 @@ resource "google_cloudbuild_trigger" "trigger" {
       }
 
       step {
-        name       = local.notify_started_deploy_slack
+        name       = local.notify_started_deploy_slack.name
         entrypoint = local.notify_started_deploy_slack.entrypoint
         args       = local.notify_started_deploy_slack.args
       }
@@ -61,7 +61,7 @@ resource "google_cloudbuild_trigger" "trigger" {
       }
 
       step {
-        name       = local.notify_completed_deploy_slack
+        name       = local.notify_completed_deploy_slack.name
         entrypoint = local.notify_completed_deploy_slack.entrypoint
         args       = local.notify_completed_deploy_slack.args
       }
