@@ -1,7 +1,7 @@
 variable "workspace" {}
 
 variable "cpu_usage_threshold" {
-  default = 0.9
+  default = 0.3
 }
 variable "slack_channel_email" {}
 variable "gcp_folder_id" {}
